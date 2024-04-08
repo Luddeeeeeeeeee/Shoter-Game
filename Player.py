@@ -4,42 +4,52 @@ from Arrows import Arrows
 class Player(pygame.sprite.Sprite):
     def __init__(self) -> None:
         super().__init__()
+        
         self.image = pygame.image.load("sprites/Player.png").convert_alpha()
         self.rect = self.image.get_rect(center = (500,450))
+        
         self.arrwos = pygame.sprite.Group()
         self.ready = True
         self.arrwos_time = 0
         self.arrwos_cooldown = 600
         self.arrwos_direction_x = 6
         self.arrwos_direction_y = 0
-        self.flip = True
-
+        self.speed = 5
 
     def move(self):
         keys = pygame.key.get_pressed()
+        move_vector = [0,0]
         if keys[pygame.K_w]:
-            self.rect.y -= 5
+            move_vector[1] -= 1
             self.arrwos_direction_x = 0
             self.arrwos_direction_y = -6
             self.flip = True
             
         if keys[pygame.K_s]:
-            self.rect.y += 5
+            move_vector[1] += 1
             self.arrwos_direction_x = 0
             self.arrwos_direction_y = 6
             self.flip = True
 
         if keys[pygame.K_a]:
-            self.rect.x -= 5
+            move_vector[0] -= 1
             self.arrwos_direction_x = -6
             self.arrwos_direction_y = 0
             self.flip = False
 
         if keys[pygame.K_d]:
-            self.rect.x += 5
+            move_vector[0] += 1
             self.arrwos_direction_x = 6
             self.arrwos_direction_y = 0
             self.flip = False
+
+        if move_vector[0] != 0 and move_vector[1] != 0:
+            move_vector[0] *= 0.7071  # Divide by square root of 2 for diagonal movement
+            move_vector[1] *= 0.7071
+
+        # Update the player's position based on the movement vector and speed
+        self.rect.x += move_vector[0] * self.speed
+        self.rect.y += move_vector[1] * self.speed
 
 
         if keys[pygame.K_SPACE] and self.ready:
@@ -54,7 +64,7 @@ class Player(pygame.sprite.Sprite):
                 self.ready =True
 
     def Shoot(self):
-        self.arrwos.add(Arrows(self.rect.center,self.arrwos_direction_x,self.arrwos_direction_y, self.flip))
+        self.arrwos.add(Arrows(self.rect.center,self.arrwos_direction_x,self.arrwos_direction_y))
 
 
     def update(self):

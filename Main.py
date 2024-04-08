@@ -10,6 +10,7 @@ class Game():
 
     def run(self):
         self.player.draw(screen)
+        self.player.draw(screen)
         self.player.sprite.arrwos.draw(screen)
         self.player.update()
         

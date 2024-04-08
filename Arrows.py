@@ -1,14 +1,13 @@
 import pygame
 
 class Arrows(pygame.sprite.Sprite):
-    def __init__(self,pos,speed_x,speed_y,flip) -> None:
+    def __init__(self,pos,speed_x,speed_y,) -> None:
         super().__init__()
         self.original_image = pygame.image.load("sprites/Arrow.png").convert_alpha()
         self.image = self.original_image
         self.rect = self.image.get_rect(center = pos)
         self.speed_y = speed_y
         self.speed_x = speed_x
-        self.flip = flip
         self.direction_flipped = False
           
         

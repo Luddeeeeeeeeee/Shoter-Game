@@ -6,8 +6,10 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         
         self.image = pygame.image.load("sprites/Player.png").convert_alpha()
-        self.rect = self.image.get_rect(center = (500,450))
         
+        self.rect = self.image.get_rect(center = (500,450))
+        self.fliped = pygame.transform.flip(self.image, True, False)
+
         self.arrwos = pygame.sprite.Group()
         self.ready = True
         self.arrwos_time = 0
@@ -15,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.arrwos_direction_x = 6
         self.arrwos_direction_y = 0
         self.speed = 5
+        self.direction = ""
 
     def move(self):
         keys = pygame.key.get_pressed()
@@ -23,31 +26,31 @@ class Player(pygame.sprite.Sprite):
             move_vector[1] -= 1
             self.arrwos_direction_x = 0
             self.arrwos_direction_y = -6
-            self.flip = True
             
         if keys[pygame.K_s]:
             move_vector[1] += 1
             self.arrwos_direction_x = 0
             self.arrwos_direction_y = 6
-            self.flip = True
 
         if keys[pygame.K_a]:
             move_vector[0] -= 1
             self.arrwos_direction_x = -6
             self.arrwos_direction_y = 0
-            self.flip = False
+            self.image = pygame.image.load("sprites/Player.png").convert_alpha()
+
 
         if keys[pygame.K_d]:
             move_vector[0] += 1
             self.arrwos_direction_x = 6
             self.arrwos_direction_y = 0
-            self.flip = False
+            self.image = self.fliped
+
 
         if move_vector[0] != 0 and move_vector[1] != 0:
-            move_vector[0] *= 0.7071  # Divide by square root of 2 for diagonal movement
+            move_vector[0] *= 0.7071  
             move_vector[1] *= 0.7071
 
-        # Update the player's position based on the movement vector and speed
+        
         self.rect.x += move_vector[0] * self.speed
         self.rect.y += move_vector[1] * self.speed
 
@@ -56,6 +59,8 @@ class Player(pygame.sprite.Sprite):
             self.Shoot()
             self.ready =False
             self.arrwos_time = pygame.time.get_ticks()
+
+
 
     def recharge(self):
         if not self.ready:

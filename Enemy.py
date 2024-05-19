@@ -1,12 +1,13 @@
 from typing import Any
 import pygame
-
+import random
 
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,player_x=0, player_y=0):
         super().__init__()
+        spawn = random.randint(50,950)
         self.image = pygame.image.load("sprites/enemy.png").convert_alpha()
-        self.rect = self.image.get_rect(center = (400,450))
+        self.rect = self.image.get_rect(center = (-20,spawn))
         self.player_x = player_x
         self.player_y = player_y
     def move_to_player(self,player_x, player_y):

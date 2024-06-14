@@ -5,9 +5,11 @@ import random
 class Enemy(pygame.sprite.Sprite):
     def __init__(self,player_x=0, player_y=0):
         super().__init__()
-        spawn = random.randint(50,950)
+        spawn = {-50:50, 500:-50, 1050:50, 500: 950}
+        x, y = random.choice(list(spawn.items()))
+
         self.image = pygame.image.load("sprites/enemy.png").convert_alpha()
-        self.rect = self.image.get_rect(center = (-20,spawn))
+        self.rect = self.image.get_rect(center = (x,y))
         self.player_x = player_x
         self.player_y = player_y
     def move_to_player(self,player_x, player_y):

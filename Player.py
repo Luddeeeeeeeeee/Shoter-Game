@@ -9,6 +9,8 @@ class Player(pygame.sprite.Sprite):
         
         self.rect = self.image.get_rect(center = (500,450))
         self.fliped = pygame.transform.flip(self.image, True, False)
+        self.speed = 6
+        self.direction = ""
 
         self.arrwos = pygame.sprite.Group()
         self.ready = True
@@ -16,8 +18,8 @@ class Player(pygame.sprite.Sprite):
         self.arrwos_cooldown = 600
         self.arrwos_direction_x = 6
         self.arrwos_direction_y = 0
-        self.speed = 5
-        self.direction = ""
+        self.amount_of_arrwos = 10
+
 
     def move(self):
         keys = pygame.key.get_pressed()
@@ -55,10 +57,11 @@ class Player(pygame.sprite.Sprite):
         self.rect.y += move_vector[1] * self.speed
 
 
-        if keys[pygame.K_SPACE] and self.ready:
+        if keys[pygame.K_SPACE] and self.ready and self.amount_of_arrwos != 0:
             self.Shoot()
             self.ready =False
             self.arrwos_time = pygame.time.get_ticks()
+            self.amount_of_arrwos -= 1
 
 
 

@@ -44,6 +44,36 @@ class Game():
         if len(self.enemy.sprites()) < self.amount_of_enemys:
             self.enemy.add(Enemy())
 
+        self.handle_enemy_collisions()
+
+
+    def handle_enemy_collisions(self):
+        enemy_list = list(self.enemy)
+        for i in range(len(enemy_list)):
+            for j in range(i + 1, len(enemy_list)):
+                enemy1 = enemy_list[i]
+                enemy2 = enemy_list[j]
+                if enemy1.rect.colliderect(enemy2.rect):
+                    self.resolve_collision(enemy1, enemy2)
+
+    def resolve_collision(self, enemy1, enemy2):
+        overlap_x = min(enemy1.rect.right, enemy2.rect.right) - max(enemy1.rect.left, enemy2.rect.left)
+        overlap_y = min(enemy1.rect.bottom, enemy2.rect.bottom) - max(enemy1.rect.top, enemy2.rect.top)
+
+        if overlap_x < overlap_y:
+            if enemy1.rect.centerx < enemy2.rect.centerx:
+                enemy1.rect.x -= overlap_x // 2
+                enemy2.rect.x += overlap_x // 2
+            else:
+                enemy1.rect.x += overlap_x // 2
+                enemy2.rect.x -= overlap_x // 2
+        else:
+            if enemy1.rect.centery < enemy2.rect.centery:
+                enemy1.rect.y -= overlap_y // 2
+                enemy2.rect.y += overlap_y // 2
+            else:
+                enemy1.rect.y += overlap_y // 2
+                enemy2.rect.y -= overlap_y // 2
         
 
     def text(self):

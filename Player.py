@@ -62,6 +62,16 @@ class Player(pygame.sprite.Sprite):
             self.ready =False
             self.arrwos_time = pygame.time.get_ticks()
             self.amount_of_arrwos -= 1
+        
+        if self.rect.x >= 937:
+            self.rect.x = 936
+        elif self.rect.x <= 0:
+            self.rect.x = 1
+
+        if self.rect.y >= 837:
+            self.rect.y = 836
+        elif self.rect.y <= 0:
+            self.rect.y = 1
 
 
 

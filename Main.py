@@ -1,7 +1,9 @@
 import pygame
+import random
 pygame.init()
 from Player import Player
 from Enemy import Enemy
+from droped_arrows import Droped_arrows
 
 
 class Game():
@@ -10,10 +12,9 @@ class Game():
         self.Clock = pygame.time.Clock()
         self.screen = pygame.display.set_mode((1000,900))
 
-        player_sprite = Player()
-        self.player = pygame.sprite.GroupSingle(player_sprite)
-        
+        self.player = pygame.sprite.GroupSingle(Player())
         self.enemy = pygame.sprite.Group(Enemy())
+        self.droped_arrows = pygame.sprite.Group()
         self.my_font = pygame.font.SysFont("Jacquard 12", 39)
         self.enemy.add(Enemy())
         self.amount_of_enemys = 1
@@ -26,20 +27,30 @@ class Game():
         for arrwos in self.player.sprite.arrwos:
             if pygame.sprite.spritecollide(arrwos, self.enemy, True):
                 arrwos.kill()
-                self.player.sprite.amount_of_arrwos += 1
                 self.amount_of_enemys += 0.125
                 self.score += 1
+                self.droped_arrows.add(Droped_arrows(arrwos.rect.x,arrwos.rect.y))
 
                 
         for enemy in self.enemy:
             if pygame.sprite.spritecollide(enemy,self.player, False):
                 self.run2 = False
                 self.enemy.empty()
+                self.droped_arrows.empty()
                 self.player.sprite.amount_of_arrwos = 10
                 self.score = 0
                 self.amount_of_enemys = 1
                 self.player.rect = 500,450
-
+        for droped_arrows in self.droped_arrows:
+            if pygame.sprite.spritecollide(droped_arrows, self.player, False):
+                one_or_two= random.randint(1,10)
+                how_many_arrwos_you_get = 0
+                if one_or_two == 1:
+                    how_many_arrwos_you_get = 2
+                else:
+                    how_many_arrwos_you_get = 1
+                self.player.sprite.amount_of_arrwos += how_many_arrwos_you_get
+                droped_arrows.kill()
         
 
         if len(self.enemy.sprites()) < self.amount_of_enemys:
@@ -90,8 +101,11 @@ class Game():
 
         text = self.my_font.render("Press E to start", False, (255, 255, 255))
         text2 = self.my_font.render("Best Score "+ str(self.best_score), False, (255, 255, 255))
+        text3 = self.my_font.render("Move with WASD and shoot the goblins with SPACE", False, (255, 255, 255))
         self.screen.blit(text, (400,350))
         self.screen.blit(text2, (400,450))
+        self.screen.blit(text3, (150,550))
+
         
     def run(self):
         run = True
@@ -112,6 +126,7 @@ class Game():
                 self.screen.fill((0,153,0))
                 self.player.draw(self.screen)
                 self.enemy.draw(self.screen)
+                self.droped_arrows.draw(self.screen)
                 self.player.sprite.arrwos.draw(self.screen)
                 player_rect = self.player.sprite.rect  
                 self.player.update()

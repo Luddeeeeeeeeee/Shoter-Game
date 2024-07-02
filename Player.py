@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.ready = True
         self.arrwos_time = 0
         self.arrwos_cooldown = 600
-        self.arrwos_direction_x = 6
+        self.arrwos_direction_x = 5
         self.arrwos_direction_y = 0
         self.amount_of_arrwos = 10
 

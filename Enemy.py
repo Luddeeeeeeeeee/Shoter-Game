@@ -14,7 +14,7 @@ class Enemy(pygame.sprite.Sprite):
         self.player_y = player_y
     def move_to_player(self,player_x, player_y):
         move_vector = [0,0]
-        speed = 3
+        speed = 2.5
         if player_x > self.rect.x:
             move_vector[0] += 1
         elif player_x < self.rect.x:

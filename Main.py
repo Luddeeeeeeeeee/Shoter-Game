@@ -19,6 +19,7 @@ class Game():
         self.amount_of_enemys = 1
         self.run2 = False
         self.score = 0
+        self.best_score = 0
 
     def collison(self):
         
@@ -26,7 +27,7 @@ class Game():
             if pygame.sprite.spritecollide(arrwos, self.enemy, True):
                 arrwos.kill()
                 self.player.sprite.amount_of_arrwos += 1
-                self.amount_of_enemys += 0.25
+                self.amount_of_enemys += 0.125
                 self.score += 1
 
                 
@@ -84,8 +85,13 @@ class Game():
 
 
     def start_screen(self):
+        if self.best_score < self.score:
+            self.best_score = self.score
+
         text = self.my_font.render("Press E to start", False, (255, 255, 255))
-        self.screen.blit(text, (360,350))
+        text2 = self.my_font.render("Best Score "+ str(self.best_score), False, (255, 255, 255))
+        self.screen.blit(text, (400,350))
+        self.screen.blit(text2, (400,450))
         
     def run(self):
         run = True
@@ -101,7 +107,7 @@ class Game():
 
             self.screen.fill((0,153,0))
             self.start_screen()
-            
+
             if self.run2 == True:
                 self.screen.fill((0,153,0))
                 self.player.draw(self.screen)

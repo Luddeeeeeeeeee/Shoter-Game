@@ -40,7 +40,8 @@ class Game():
                 self.player.sprite.amount_of_arrwos = 10
                 self.score = 0
                 self.amount_of_enemys = 1
-                self.player.rect = 500,450
+                self.player.sprite.rect.x = 500
+                self.player.sprite.rect.y = 450
         for droped_arrows in self.droped_arrows:
             if pygame.sprite.spritecollide(droped_arrows, self.player, False):
                 one_or_two= random.randint(1,10)
